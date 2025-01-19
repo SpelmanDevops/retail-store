@@ -1,0 +1,31 @@
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: "latest"
+
+service:
+  type: LoadBalancer
+  port: 80
+
+serviceAccount:
+  create: true
+  name: pos-system-serviceaccount
+  automount: true
+
+ingress:
+  enabled: false # Change to true if you want ingress enabled
+  className: nginx
+  annotations: {}
+  hosts:
+    - host: example.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+autoscaling:
+  enabled: false # Set to true to enable HPA
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
