@@ -13,21 +13,23 @@ serviceAccount:
   name: pos-system-serviceaccount
   automount: true
 
-secrets: # Adding Secrets Integration
-  enabled: true
-  name: pos-system-secret # Kubernetes Secret name
+secrets: # Store-specific secrets
+  name: pos-system-secret-store2 # Kubernetes Secret for Store 2
   values:
     - name: DB_PASSWORD
       key: db-password
     - name: API_KEY
       key: api-key
 
+env: # Store-specific environment variable
+  STORE_ID: store2
+
 ingress:
   enabled: false # Change to true if you want ingress enabled
   className: nginx
   annotations: {}
   hosts:
-    - host: example.com
+    - host: store2.example.com
       paths:
         - path: /
           pathType: ImplementationSpecific
@@ -38,6 +40,3 @@ autoscaling:
   minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 80
-
-env: # Adding environment variables for store-specific configuration
-  STORE_ID: store1 # Default store ID

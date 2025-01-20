@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: custom-alerts
+  namespace: monitoring
+spec:
+  groups:
+    - name: custom-rules
+      rules:
+        - alert: HighCPUUsage
+          expr: 100 * (1 - avg(irate(node_cpu_seconds_total{mode="idle"}[2m]))) > 80
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: "High CPU usage detected"
+            description: "CPU usage is above 80% for 2 minutes."
+        - alert: PodCrashLoopBackOff
+          expr: kube_pod_container_status_waiting_reason{reason="CrashLoopBackOff"} > 0
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Pod in CrashLoopBackOff"
+            description: "A pod is stuck in CrashLoopBackOff state for more than 1 minute."
