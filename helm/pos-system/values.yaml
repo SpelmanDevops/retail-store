@@ -1,4 +1,4 @@
-replicaCount: 2
+replicaCount: 3
 
 image:
   repository: nginx
@@ -41,3 +41,11 @@ autoscaling:
 
 env: # Adding environment variables for store-specific configuration
   STORE_ID: store1 # Default store ID
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "100m"
+  limits:
+    memory: "256Mi"
+    cpu: "200m"
