@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: pos-system-store1
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/SpelmanDevops/retail-store.git
+    path: helm/pos-system
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: store1
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
